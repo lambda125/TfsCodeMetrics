@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Metrics.Tests
+namespace Metrics.UnitTests
 {
     class InMemoryDbSet<T> : IDbSet<T> where T : class
     {

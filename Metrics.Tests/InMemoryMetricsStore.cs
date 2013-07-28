@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Metrics.Data;
 
-namespace Metrics.Tests
+namespace Metrics.UnitTests
 {
     class InMemoryMetricsStore : IMetricsStore
     {

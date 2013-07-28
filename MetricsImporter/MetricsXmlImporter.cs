@@ -1,14 +1,19 @@
-﻿using System.Collections.Generic;
+﻿extern alias metrix;
+//aliases for global metrics xml classes
+using XBuild = metrix::CodeMetricsReport;
+using XTarget = metrix::Target;
+using XModule = metrix::Module;
+using XNamespace = metrix::Namespace;
+using XType = metrix::Type;
+using XMember = metrix::Member;
+using XMetric = metrix::Metric;
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CodeMetricsSchema;
 using Metrics.Data;
-using Metric = Metrics.Data.Metric;
-using Module = Metrics.Data.Module;
-using Namespace = Metrics.Data.Namespace;
-using Target = Metrics.Data.Target;
 
-namespace MetricsImport
+namespace Metrics.Import
 {
     public class XmlImporter
     {
@@ -19,7 +24,7 @@ namespace MetricsImport
             _metricsStore = metricsStore;
         }
 
-        public async Task Import(CodeMetricsReport metricsXmlData, string buildName)
+        public async Task Import(XBuild metricsXmlData, string buildName)
         {
             var build = new Build
             {
@@ -36,7 +41,7 @@ namespace MetricsImport
             await _metricsStore.SaveChangesAsync();
         }
 
-        private static void CreateTargets(Build build, IEnumerable<CodeMetricsSchema.Target> targets)
+        private static void CreateTargets(Build build, IEnumerable<XTarget> targets)
         {
             foreach (var target in targets)
             {
@@ -55,7 +60,7 @@ namespace MetricsImport
             }
         }
 
-        private static void CreateModules(Target target, IEnumerable<CodeMetricsSchema.Module> modules)
+        private static void CreateModules(Target target, IEnumerable<XModule> modules)
         {
             foreach (var module in modules)
             {
@@ -73,7 +78,7 @@ namespace MetricsImport
             }
         }
 
-        private static void CreateNamespaces(Module module, IEnumerable<CodeMetricsSchema.Namespace> namespaces)
+        private static void CreateNamespaces(Module module, IEnumerable<XNamespace> namespaces)
         {
             foreach (var ns in namespaces)
             {
@@ -91,7 +96,7 @@ namespace MetricsImport
             }
         }
 
-        private static void CreateTypes(Namespace ns, IEnumerable<Type> types)
+        private static void CreateTypes(Namespace ns, IEnumerable<XType> types)
         {
             foreach (var type in types)
             {
@@ -109,7 +114,7 @@ namespace MetricsImport
             }
         }
 
-        private static void CreateMembers(CodeType type, IEnumerable<Member> members)
+        private static void CreateMembers(CodeType type, IEnumerable<XMember> members)
         {
             foreach (var member in members)
             {
@@ -154,7 +159,7 @@ namespace MetricsImport
             target.Metrics = targetMetrics.ToList();
         }
 
-        private static ICollection<Metric> CreateMetrics(IEnumerable<CodeMetricsSchema.Metric> metrics)
+        private static ICollection<Metric> CreateMetrics(IEnumerable<XMetric> metrics)
         {
             var convertedMetrics = 
                 metrics.Select(m => new Metric

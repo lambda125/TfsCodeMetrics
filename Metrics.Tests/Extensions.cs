@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 
-namespace Metrics.Tests
+namespace Metrics.UnitTests
 {
     public static class Extensions
     {
@@ -25,6 +26,13 @@ namespace Metrics.Tests
         public static bool IsNotNullOrEmpty<T>(this IEnumerable<T> list)
         {
             return list != null && list.Any();
+        }
+
+        public static void ShouldNotBeNullAndHaveCount<T>(this ICollection<T> items, int expectedCount)
+        {
+            items.Should().NotBeNull();
+            items.Should().NotBeEmpty().And.HaveCount(expectedCount);
+            items.Should().OnlyContain(item => item.IsNotNull());
         }
     }
 }
